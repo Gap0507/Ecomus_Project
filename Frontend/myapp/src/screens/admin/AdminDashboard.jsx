@@ -20,7 +20,7 @@ function AdminDashboard() {
       case 'categories':
         return <CategorySection />;
       case 'products':
-        return <ProductSection />;
+        return <ProductSection/>;
       default:
         return <BannerSection />;
     }

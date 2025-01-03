@@ -1,176 +1,430 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { Alert, Snackbar } from '@mui/material';
 
 const ProductSection = () => {
-  const [productData, setProductData] = useState({
-    name: '',
-    description: '',
-    price: 0,
-    category: '', // Store the ObjectId of the category
-    sizes: [{ name: '' }], // Initial size array with one empty size
-    colors: [{ name: '', hexCode: '' }], // Initial color array with one empty color
-    stock: 0,
-    images: [''], // Initial images array with one empty string
-});
-  return (
-    <div>
-      <h2>Manage Products</h2>
-      {/* Accordion for Add Marquee */}
-      <div className="accordion" id="addProductAccordion">
-        <div className="accordion-item">
-          <h2 className="accordion-header" id="headingOne">
-            <button
-              className={`accordion-button ${accordionOpen ? '' : 'collapsed'}`}
-              type="button"
-              onClick={() => setAccordionOpen(!accordionOpen)}
-              aria-expanded={accordionOpen}
-              aria-controls="collapseOne"
-            >
-              Add Product
-            </button>
-          </h2>
-          <div
-            id="collapseOne"
-            className={`accordion-collapse collapse ${accordionOpen ? 'show' : ''}`}
-            aria-labelledby="headingOne"
-            data-bs-parent="#addProductAccordion"
-          >
-            <div className="accordion-body">
-              <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <label className="form-label">Name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                  />
+    const initialProducts = [
+        {
+            id: 1,
+            name: "Ribbed Tank Top",
+            description: "Comfortable ribbed tank top perfect for summer",
+            category: "Tops",
+            variants: [
+                {
+                    color: { name: "Orange", hexCode: "#FFA500" },
+                    size: "M",
+                    price: 16.95,
+                    stock: 100,
+                    images: ["/api/placeholder/400/300"]
+                },
+                {
+                    color: { name: "Black", hexCode: "#000000" },
+                    size: "L",
+                    price: 16.95,
+                    stock: 150,
+                    images: ["/api/placeholder/400/300"]
+                }
+            ]
+        },
+        {
+            id: 2,
+            name: "Ribbed Modal T-shirt",
+            description: "Classic modal t-shirt with ribbed texture",
+            category: "T-Shirts",
+            variants: [
+                {
+                    color: { name: "White", hexCode: "#FFFFFF" },
+                    size: "S",
+                    price: 18.95,
+                    stock: 75,
+                    images: ["/api/placeholder/400/300"]
+                },
+                {
+                    color: { name: "Pink", hexCode: "#FFC0CB" },
+                    size: "M",
+                    price: 18.95,
+                    stock: 85,
+                    images: ["/api/placeholder/400/300"]
+                }
+            ]
+        }
+    ];
+
+    const [products, setProducts] = useState(initialProducts);
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [category, setCategory] = useState('');
+    const [variants, setVariants] = useState([{
+        color: { name: '', hexCode: '' },
+        size: '',
+        price: '',
+        stock: '',
+        images: ["/api/placeholder/400/300"]
+    }]);
+    const [success, setSuccess] = useState('');
+    const [error, setError] = useState('');
+    const [toastOpen, setToastOpen] = useState(false);
+    const [errorToastOpen, setErrorToastOpen] = useState(false);
+    const [editingProduct, setEditingProduct] = useState(null);
+    const [accordionOpen, setAccordionOpen] = useState(false);
+
+    const categories = ['T-Shirts', 'Tops', 'Bottoms', 'Dresses', 'Accessories'];
+    const colors = [
+        { name: 'White', hexCode: '#FFFFFF' },
+        { name: 'Black', hexCode: '#000000' },
+        { name: 'Orange', hexCode: '#FFA500' },
+        { name: 'Pink', hexCode: '#FFC0CB' },
+        { name: 'Blue', hexCode: '#0000FF' }
+    ];
+    const sizes = ['XS', 'S', 'M', 'L', 'XL'];
+
+    const handleAddVariant = () => {
+        setVariants([...variants, {
+            color: { name: '', hexCode: '' },
+            size: '',
+            price: '',
+            stock: '',
+            images: ["/api/placeholder/400/300"]
+        }]);
+    };
+
+    const handleRemoveVariant = (index) => {
+        const newVariants = variants.filter((_, idx) => idx !== index);
+        setVariants(newVariants);
+    };
+
+    const handleVariantChange = (index, field, value) => {
+        const newVariants = [...variants];
+        if (field === 'color') {
+            const selectedColor = colors.find(c => c.name === value);
+            newVariants[index].color = selectedColor;
+        } else if (field === 'images') {
+            const file = value.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                    newVariants[index].images = [reader.result];
+                    setVariants([...newVariants]);
+                };
+                reader.readAsDataURL(file);
+            }
+        } else {
+            newVariants[index][field] = value;
+        }
+        if (field !== 'images') {
+            setVariants(newVariants);
+        }
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const newProduct = {
+            id: editingProduct ? editingProduct.id : products.length + 1,
+            name,
+            description,
+            category,
+            variants
+        };
+
+        if (editingProduct) {
+            setProducts(products.map(p => p.id === editingProduct.id ? newProduct : p));
+            setSuccess('Product updated successfully');
+        } else {
+            setProducts([...products, newProduct]);
+            setSuccess('Product added successfully');
+        }
+
+        setToastOpen(true);
+        resetForm();
+    };
+
+    const resetForm = () => {
+        setName('');
+        setDescription('');
+        setCategory('');
+        setVariants([{
+            color: { name: '', hexCode: '' },
+            size: '',
+            price: '',
+            stock: '',
+            images: ["/api/placeholder/400/300"]
+        }]);
+        setEditingProduct(null);
+        setAccordionOpen(false);
+    };
+
+    const handleEdit = (product) => {
+        setEditingProduct(product);
+        setName(product.name);
+        setDescription(product.description);
+        setCategory(product.category);
+        setVariants(product.variants);
+        setAccordionOpen(true);
+    };
+
+    const handleDelete = (productId) => {
+        setProducts(products.filter(p => p.id !== productId));
+        setSuccess('Product deleted successfully');
+        setToastOpen(true);
+    };
+
+    return (
+        <div className="container-fluid px-4">
+            <h2 className="mb-4">Manage Products</h2>
+
+            <div className="accordion mb-4" id="productAccordion">
+                <div className="accordion-item">
+                    <h2 className="accordion-header">
+                        <button
+                            className={`accordion-button ${accordionOpen ? '' : 'collapsed'}`}
+                            type="button"
+                            onClick={() => setAccordionOpen(!accordionOpen)}
+                        >
+                            {editingProduct ? 'Edit Product' : 'Add New Product'}
+                        </button>
+                    </h2>
+                    <div className={`accordion-collapse collapse ${accordionOpen ? 'show' : ''}`}>
+                        <div className="accordion-body">
+                            <form onSubmit={handleSubmit}>
+                                <div className="row mb-3">
+                                    <div className="col-12 col-md-6">
+                                        <label className="form-label">Product Name</label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                            required
+                                        />
+                                    </div>
+                                    <div className="col-12 col-md-6">
+                                        <label className="form-label">Category</label>
+                                        <select
+                                            className="form-select"
+                                            value={category}
+                                            onChange={(e) => setCategory(e.target.value)}
+                                            required
+                                        >
+                                            <option value="">Select Category</option>
+                                            {categories.map((cat, index) => (
+                                                <option key={index} value={cat}>{cat}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div className="mb-3">
+                                    <label className="form-label">Description</label>
+                                    <textarea
+                                        className="form-control"
+                                        rows="3"
+                                        value={description}
+                                        onChange={(e) => setDescription(e.target.value)}
+                                        required
+                                    ></textarea>
+                                </div>
+
+                                <div className="mb-3">
+                                    <div className="d-flex justify-content-between align-items-center mb-3">
+                                        <h5>Product Variants</h5>
+                                        <button
+                                            type="button"
+                                            className="btn btn-outline-primary"
+                                            onClick={handleAddVariant}
+                                        >
+                                            Add Variant
+                                        </button>
+                                    </div>
+
+                                    {variants.map((variant, index) => (
+                                        <div key={index} className="card mb-3 p-3">
+                                            <div className="row g-3">
+                                                <div className="col-12 col-sm-6 col-md-2">
+                                                    <label className="form-label">Color</label>
+                                                    <select
+                                                        className="form-select"
+                                                        value={variant.color.name}
+                                                        onChange={(e) => handleVariantChange(index, 'color', e.target.value)}
+                                                        required
+                                                    >
+                                                        <option value="">Select Color</option>
+                                                        {colors.map((color, idx) => (
+                                                            <option key={idx} value={color.name}>
+                                                                {color.name}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                                <div className="col-12 col-sm-6 col-md-2">
+                                                    <label className="form-label">Size</label>
+                                                    <select
+                                                        className="form-select"
+                                                        value={variant.size}
+                                                        onChange={(e) => handleVariantChange(index, 'size', e.target.value)}
+                                                        required
+                                                    >
+                                                        <option value="">Select Size</option>
+                                                        {sizes.map((size, idx) => (
+                                                            <option key={idx} value={size}>{size}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                                <div className="col-12 col-sm-6 col-md-2">
+                                                    <label className="form-label">Price</label>
+                                                    <input
+                                                        type="number"
+                                                        className="form-control"
+                                                        value={variant.price}
+                                                        onChange={(e) => handleVariantChange(index, 'price', e.target.value)}
+                                                        required
+                                                    />
+                                                </div>
+                                                <div className="col-12 col-sm-6 col-md-2">
+                                                    <label className="form-label">Stock</label>
+                                                    <input
+                                                        type="number"
+                                                        className="form-control"
+                                                        value={variant.stock}
+                                                        onChange={(e) => handleVariantChange(index, 'stock', e.target.value)}
+                                                        required
+                                                    />
+                                                </div>
+                                                <div className="col-12 col-sm-6 col-md-3">
+                                                    <label className="form-label">Image</label>
+                                                    <input
+                                                        type="file"
+                                                        className="form-control"
+                                                        onChange={(e) => handleVariantChange(index, 'images', e)}
+                                                        accept="image/*"
+                                                    />
+                                                    {variant.images[0] && (
+                                                        <div className="mt-2">
+                                                            <img
+                                                                src={variant.images[0]}
+                                                                alt="Preview"
+                                                                style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+                                                                className="rounded"
+                                                            />
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                <div className="col-12 col-sm-6 col-md-1 d-flex align-items-end">
+                                                    {variants.length > 1 && (
+                                                        <button
+                                                            type="button"
+                                                            className="btn btn-outline-danger"
+                                                            onClick={() => handleRemoveVariant(index)}
+                                                        >
+                                                            ✕
+                                                        </button>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                <div className="d-grid">
+                                    <button type="submit" className="btn btn-primary">
+                                        {editingProduct ? 'Update Product' : 'Add Product'}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
-                <div className="mb-3">
-                  <label className="form-label">Description</label>
-                  <textarea
-                    className="form-control"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    required
-                  ></textarea>
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Image</label>
-                  <input
-                    type="file"
-                    className="form-control"
-                    onChange={(e) => setImage(e.target.files[0])}
-                    ref={fileInputRef}
-                    required
-                  />
-                </div>
-                <button type="submit" className="btn btn-outline-primary w-100">
-                  Add Category
-                </button>
-              </form>
             </div>
-          </div>
-        </div>
-      </div>
-
-      {loading ? (
-        <p>Loading categories...</p>
-      ) : error2 ? (
-        <p className="text-danger">Error: {error2}</p>
-      ) : (
-        <div className="mt-4">
-          <div className=' d-flex align-items-center gap-2'>
-
-            <h3 >Existing Categories </h3><h5>({categories.length} Categories)</h5>
-          </div>
-          {categories.length === 0 ? (
-            <p>No categories found.</p>
-          ) : (
             <div className="row">
-              {categories.map((category, index) => (
-                <div className="col-md-4" key={index}>
-                  <div className="card hover-card">
-                    <img
-                      src={`http://localhost:7777${category.image}`} // Use relative path
-                      alt={category.image}
-                      style={{ height: '200px', objectFit: 'cover' }}
-                      className="card-img-top"
-                    />
-                    <div className="card-body">
-                      <h4 className="card-title">{category.name}</h4>
-                      <p className="card-text">{category.description}</p>
+    <h3 className="mb-4">Product List</h3>
+    {products.map((product) => (
+        <div key={product.id} className="col-12 col-md-6 col-lg-4 mb-4">
+            <div className="card h-100">
+                <div className="card-body">
+                    <div className="d-flex justify-content-between mb-3">
+                        <h5 className="card-title">{product.name}</h5>
+                        <div>
+                            <button
+                                className="btn btn-light btn-sm me-2"
+                                onClick={() => handleEdit(product)}
+                            >
+                                Edit
+                            </button>
+                            <button
+                                className="btn btn-danger btn-sm"
+                                onClick={() => handleDelete(product.id)}
+                            >
+                                Delete
+                            </button>
+                        </div>
                     </div>
-                    <div className="hover-overlay">
-                      <button className="btn btn-outline-info w-50 mt-2" data-bs-toggle="modal" data-bs-target="#exampleModal" onClick={() => handleOpenModal(index)}>Update</button>
-                      <button className="btn btn-outline-danger w-50 mt-2" onClick={() => handleDeleteCategory(index)}>Delete</button>
+                    <p className="card-text">{product.description}</p>
+                    <p className="card-text"><small className="text-muted">Category: {product.category}</small></p>
+                    
+                    <div className="mt-3">
+                        <h6 className="mb-3">Product Variants:</h6>
+                        {product.variants.map((variant, idx) => (
+                            <div key={idx} className="mb-3 d-flex align-items-center">
+                                <div className="flex-shrink-0" style={{ width: '40%' }}>
+                                    <div className="text-center mb-2">
+                                        <img
+                                            src={variant.images[0]}
+                                            className="img-fluid rounded"
+                                            alt={`${product.name} - ${variant.color.name}`}
+                                            style={{ 
+                                                height: '120px',
+                                                maxWidth: '100%',
+                                                objectFit: 'contain'
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="flex-grow-1 ms-3">
+                                    <div className="d-flex justify-content-between align-items-center">
+                                        <div className="text-nowrap" style={{ width: '33%' }}>
+                                            {variant.color.name} - {variant.size}
+                                        </div>
+                                        <div className="text-center" style={{ width: '33%' }}>
+                                            ${variant.price}
+                                        </div>
+                                        <div className="text-end" style={{ width: '33%' }}>
+                                            Stock: {variant.stock}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
                     </div>
-                  </div>
                 </div>
-              ))}
             </div>
-          )}
         </div>
-      )}
-      {/* Snackbar */}
-      <Snackbar
-        open={toastOpen}
-        autoHideDuration={3000}
-        onClose={handleToastClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert onClose={handleToastClose} severity="success" sx={{ width: "100%" }}>
-          {success}
-        </Alert>
-      </Snackbar>
-      <Snackbar
-        open={errorToastOpen}
-        autoHideDuration={3000}
-        onClose={handleErrorToastClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert onClose={handleErrorToastClose} severity="error" sx={{ width: "100%" }}>
-          {error}
-        </Alert>
-      </Snackbar>
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Update Category</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <form>
-                <div class="mb-3">
-                  <label class="col-form-label">Name:</label>
-                  <input type="text" class="form-control" value={whichCategory != -1 && updateName} onChange={(e) => setUpdateName(e.target.value)} />
-                </div>
-                <div class="mb-3">
-                  <label for="message-text" class="col-form-label">Description:</label>
-                  <textarea class="form-control" id="message-text" value={whichCategory != -1 && updateDescription} onChange={(e) => setUpdateDescription(e.target.value)}></textarea>
-                </div>
-                <div className="mb-3">
-                  <label className="form-label">Image</label>
-                  <input
-                    type="file"
-                    className="form-control"
-                    required
-                    onChange={(e) => setUpdateImage(e.target.files[0])}
-                    ref={fileInputRef1}
-                  />
-                </div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" onClick={handleUpdateCategory}>Update</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
+    ))}
+</div>
 
-export default ProductSection
+
+
+            {/* Toasts section remains exactly the same */}
+            <Snackbar
+                open={toastOpen}
+                autoHideDuration={3000}
+                onClose={() => setToastOpen(false)}
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            >
+                <Alert onClose={() => setToastOpen(false)} severity="success" sx={{ width: "100%" }}>
+                    {success}
+                </Alert>
+            </Snackbar>
+
+            <Snackbar
+                open={errorToastOpen}
+                autoHideDuration={3000}
+                onClose={() => setErrorToastOpen(false)}
+                anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+            >
+                <Alert onClose={() => setErrorToastOpen(false)} severity="error" sx={{ width: "100%" }}>
+                    {error}
+                </Alert>
+            </Snackbar>
+        </div>
+    );
+};
+
+export default ProductSection;

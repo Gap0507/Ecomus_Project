@@ -1,0 +1,14 @@
+.wishlist-section {
+    height: 200px;
+    background: linear-gradient(to right, #fceceb, #f1f8ff); /* Gradient colors */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .wishlist-section h2 {
+    font-size: 24px;
+    font-weight: 500;
+  }
+  

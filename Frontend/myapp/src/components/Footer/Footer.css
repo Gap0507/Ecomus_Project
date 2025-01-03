@@ -1,0 +1,17 @@
+.footer a {
+    color: #000;
+    transition: color 0.3s;
+  }
+  
+  .footer a:hover {
+    color: #555;
+  }
+  
+  .footer .form-control {
+    border-radius: 0;
+  }
+  
+  .footer .btn {
+    border-radius: 0;
+  }
+  

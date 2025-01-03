@@ -1,0 +1,95 @@
+/* Responsive Adjustments */
+@media (max-width: 767px) {
+    .discover-section p{
+        font-size: 30px !important;
+        font-weight: normal !important;
+    }
+    
+    
+    
+}
+/* Responsive Adjustments */
+@media (max-width: 576px) {
+    .category-name{
+        left: 0 !important;
+    }
+    .discover-section p{
+        font-size: 27px !important;
+        font-weight: normal !important;
+    }
+    .discover-section{
+        padding: 5px !important;
+        
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 380px) {
+    
+    .discover-section p{
+        font-size: 24px !important;
+        font-weight: normal !important;
+    }
+    .discover-section{
+        padding: 5px !important;
+        
+    }
+}
+/* Responsive Adjustments */
+@media (max-width: 349px) {
+    
+    .discover-section p{
+        font-size: 22px !important;
+        font-weight: normal !important;
+    }
+    .discover-section{
+        padding: 5px !important;
+        
+    }
+}
+/* Responsive Adjustments */
+@media (max-width: 330px) {
+    
+    .discover-section p{
+        font-size: 20px !important;
+        font-weight: normal !important;
+    }
+    .discover-section{
+        padding: 5px !important;
+        
+    }
+}
+/* Responsive Adjustments */
+@media (max-width: 364px) {
+    .category-heading{
+        font-size: 18px !important;
+    }
+    
+
+
+}
+/* Responsive Adjustments */
+@media (max-width: 338px) {
+    .category-heading{
+        font-size: 17px !important;
+    }
+    .category-icons{
+        
+        font-size: 14px !important;
+    }
+    
+    
+}
+/* Responsive Adjustments */
+@media (max-width: 327px) {
+    .category-heading{
+        font-size: 15px !important;
+    }
+    
+    .category-icons{
+        
+        font-size: 13px !important;
+    }
+}
+
+

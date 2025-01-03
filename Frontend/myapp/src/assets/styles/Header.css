@@ -1,0 +1,115 @@
+.icons {
+    background-color: #ebebeb;
+    border-radius: 50%;
+}
+
+/* Default Navbar Styles */
+nav {
+    background-color: transparent;
+    position: fixed;
+    top: 1;
+    left: 0;
+    right: 0;
+    z-index: 11;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Scrolled Navbar Styles */
+.navbar-scrolled {
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    top: 0;
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+}
+
+
+.navbar {
+    position: fixed;
+    top: 1;
+    left: 0;
+    right: 0;
+    z-index: 11;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    .topbar .only-text-tablet {
+        display: block !important;
+    }
+
+    .topbar .only-text-mobile {
+        display: none !important;
+    }
+
+    .topbar .all {
+        display: none !important;
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .topbar .only-text-mobile {
+        display: block !important;
+    }
+
+    .topbar .only-text-tablet {
+        display: none !important;
+    }
+
+    .topbar .all {
+        display: none !important;
+    }
+}
+
+/* Responsive Adjustments */
+@media (min-width: 993px) {
+    .topbar .only-text-tablet {
+        display: none !important;
+    }
+
+    .topbar .only-text-mobile {
+        display: none !important;
+    }
+
+}
+
+.hover-section-container-home,
+.hover-section-container-shop,
+.hover-section-container-product {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: #fff;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    transition: all 0.7s ease;
+    pointer-events: none;
+}
+
+
+.hover-section-container-home.opacity-100,
+.hover-section-container-shop.opacity-100,
+.hover-section-container-product.opacity-100 {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+.hover-section-container-pages {
+    position: absolute;
+    z-index: 1000;
+    width: 17%;
+    left: 47%;
+    background-color: #fff;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.hover-section-container-blog {
+    position: absolute;
+    z-index: 1000;
+    width: 17%;
+    left: 53%;
+    background-color: #fff;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}

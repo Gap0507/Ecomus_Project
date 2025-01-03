@@ -1,0 +1,38 @@
+.shop-image-wrapper {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.shop-image {
+    transition: transform 0.3s ease;
+    width: 100%;
+    border-radius: 8px; /* Rounded edges for the image */
+}
+
+.shop-image-wrapper:hover .shop-image {
+    transform: scale(1.05); /* Slight zoom on hover */
+    opacity: 0.9;
+}
+
+.cart-icon-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+    font-size: 1.3rem;
+    background-color: #fff; /* Dark circular background */
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%; /* Ensures the wrapper is a circle */
+}
+
+.shop-image-wrapper:hover .cart-icon-wrapper {
+    opacity: 1;
+}

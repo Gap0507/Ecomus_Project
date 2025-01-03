@@ -1,0 +1,43 @@
+
+/* Custom Swiper Navigation Buttons */
+.swiper-button-next,
+.swiper-button-prev {
+    position: absolute;
+    top: 50%; /* Center the buttons vertically */
+    transform: translateY(-50%); /* Adjust for perfect centering */
+    color: #000;
+    background-color: transparent; /* White background */
+    border: 1px solid #000; /* Black border */
+    border-radius: 50%; /* Circular shape */
+    width: 40px;
+    height: 40px;
+    transition: all 0.3s ease;
+}
+
+.swiper-button-prev {
+    left: 0px; /* Adjust position to the left */
+}
+
+.swiper-button-next {
+    right: 0px; /* Adjust position to the right */
+}
+
+/* Hover effect for navigation buttons */
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+    background-color: #000; /* Black background on hover */
+    color: #fff; /* White icon color on hover */
+}
+
+/* Custom navigation icon size */
+.swiper-button-next::after,
+.swiper-button-prev::after {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
+
+
+
+

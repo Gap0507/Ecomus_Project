@@ -1,0 +1,149 @@
+/* Hero Section */
+.hero-section {
+  position: relative;
+  overflow: hidden;
+  /* padding-top: px; */
+}
+
+.carousel-inner img {
+  object-fit: cover;
+  height: calc(100vh - 47px);
+  object-position: top;
+}
+
+.overlay-text-left {
+  position: absolute;
+  top: 50%;
+  left: 5%;
+  transform: translateY(-50%);
+  z-index: 10;
+  max-width: 450px;
+}
+
+.overlay-text-left .text-wrapper {
+  text-align: left;
+}
+
+.overlay-text-left h1 {
+  font-size: 4rem;
+  color: #000;
+}
+
+.overlay-text-left p {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.overlay-text-left button {
+  background-color: #000;
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+}
+
+/* Remove default carousel controls */
+.carousel-control-prev,
+.carousel-control-next {
+  display: none;
+}
+
+/* Custom Indicators */
+.carousel-indicators {
+  position: absolute;
+  bottom: 1rem;
+}
+
+.carousel-indicators [data-bs-target] {
+  background-color: #000;
+  /* Custom color for indicators */
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin: 0 5px;
+  border: 2px solid transparent;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.carousel-indicators .active {
+  background-color: transparent;
+  border: 2px solid #000;
+  /* Highlight active indicator */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+  .carousel-inner img {
+    height: calc(88vh);
+  }
+
+  /* Custom Indicators */
+  .carousel-indicators {
+    bottom: 2rem;
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .overlay-text-left h1 {
+    font-size: 3.5rem;
+  }
+
+  .carousel-inner img {
+    /* object-fit:contain; */
+    height: calc(88vh);
+  }
+  /* Custom Indicators */
+  .carousel-indicators {
+    bottom: 2rem;
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 576px) {
+  .overlay-text-left h1 {
+    font-size: 2.5rem;
+    padding-right: 9rem;
+  }
+
+  .overlay-text-left button {
+    padding: 0.50rem 1rem;
+  }
+  
+  .carousel-inner img {
+    /* object-fit:contain; */
+    height: calc(88vh);
+  }
+  /* Custom Indicators */
+  .carousel-indicators {
+    bottom: 2rem;
+  }
+}
+/* Responsive Adjustments */
+@media (max-width: 590px) {
+  .carousel-inner img {
+    object-position: right -15rem bottom 10px;
+  }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 376px) {
+  .overlay-text-left {
+    top: 60%;
+  }
+
+
+
+}
+/* Responsive Adjustments */
+@media (max-width: 340px) {
+  .overlay-text-left h1 {
+    font-size: 2.2rem;
+    padding-right: 9rem;
+  }
+
+  .overlay-text-left button {
+    padding: 0.40rem 0.8rem;
+  }
+
+
+}

@@ -1,0 +1,77 @@
+/* Ensures no gap between images */
+.image-container {
+    padding: 0;
+    margin: 0;
+}
+
+/* Removes gutter between columns */
+.row.no-gutters {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+
+/* Hotspot styles */
+.hotspot {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    background-color: white;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hotspot span {
+    width: 8px;
+    height: 8px;
+    background-color: #000;
+    border-radius: 50%;
+}
+
+.hotspot:hover {
+    transform: scale(1.2);
+}
+
+/* Media queries for smaller screens */
+@media (max-width: 767px) {
+
+    .hotspot {
+        width: 18px;
+        height: 18px;
+    }
+
+    .hotspot span {
+        width: 7px;
+        height: 7px;
+    }
+}
+
+/* Swiper Pagination Styles */
+.swiper-pagination-bullet {
+    width: 11px;
+    height: 11px;
+    background-color: black; /* Inactive dots are black */
+    opacity: 0.5;
+    border-radius: 50%;
+    margin: 0 5px; /* Add spacing between bullets */
+    transition: all 0.3s ease-in-out;
+}
+
+.swiper-pagination-bullet-active {
+    width: 13px; /* Larger size for active indicator */
+    height: 13px;
+    background-color: white; /* White background for active indicator */
+    border: 2px solid black; /* Black border for contrast */
+    opacity: 1;
+    border-spacing: 5px;
+    transform: scale(1.2); /* Slight scale effect */
+}
+
+.custom-popup {
+    border: 1px solid #ddd;
+    font-size: 14px;
+}

@@ -4,7 +4,7 @@ import MarqueeSection from '../../components/Admin/MarqueeSection';
 import CategorySection from '../../components/Admin/CategorySection';
 import ColorPicker from '../../components/Admin/ColorPicker';
 import SizePicker from '../../components/Admin/SizePicker';
-
+import ProductSection from '../../components/Admin/ProductSection';
 // Import other components for different sections
 function AdminDashboard() {
 
@@ -22,7 +22,6 @@ function AdminDashboard() {
         return <CategorySection />;
       case 'products':
         return <ProductSection/>;
-        return <BannerSection />;
       case 'Color Picker':
         return <ColorPicker />;
       case 'Size Picker':

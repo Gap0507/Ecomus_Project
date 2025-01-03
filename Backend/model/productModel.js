@@ -1,5 +1,3 @@
-import mongoose from 'mongoose';
-
 const productSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -11,40 +9,36 @@ const productSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    price: {
-        type: Number,
-        required: true,
-        min: 0
-    },
     category: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Category', // Assuming you have a Category model
+        ref: 'Category',
         required: true
     },
-    sizes: [{
-        name: {
-            type: String,
+    variants: [{
+        color: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Color',
             required: true
         },
-    }],
-    colors: [{
-        name: {
-            type: String,
+        size: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Size',
             required: true
         },
-        hexCode: {
-            type: String, // Optional, if you want to store color codes
-            required: false
+        price: {
+            type: Number,
+            required: true,
+            min: 0
         },
-    }],
-    stock: {
-        type: Number,
-        required: true,
-        min: 0
-    },
-    images: [{
-        type: String, // URL of product images
-        required: true
+        stock: {
+            type: Number,
+            required: true,
+            min: 0
+        },
+        image: {
+            type: String, // URL of variant-specific images
+            required: true
+        }
     }],
     createdAt: {
         type: Date,
@@ -60,7 +54,6 @@ productSchema.pre('save', function (next) {
     this.updatedAt = Date.now();
     next();
 });
-
 
 const Product = mongoose.model('Product', productSchema);
 

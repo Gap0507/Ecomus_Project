@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import BannerSection from '../../components/Admin/BannnerSection';
 import MarqueeSection from '../../components/Admin/MarqueeSection';
 import CategorySection from '../../components/Admin/CategorySection';
-import ProductSection from '../../components/Admin/ProductSection';
+import ColorPicker from '../../components/Admin/ColorPicker';
+import SizePicker from '../../components/Admin/SizePicker';
 
 // Import other components for different sections
 function AdminDashboard() {
@@ -21,6 +22,11 @@ function AdminDashboard() {
         return <CategorySection />;
       case 'products':
         return <ProductSection/>;
+        return <BannerSection />;
+      case 'Color Picker':
+        return <ColorPicker />;
+      case 'Size Picker':
+        return <SizePicker />;
       default:
         return <BannerSection />;
     }
@@ -41,6 +47,8 @@ function AdminDashboard() {
             { key: 'Marquee Section', label: 'Marquee Section' },
             { key: 'categories', label: 'Categories' },
             { key: 'products', label: 'Products' },
+            { key: 'Color Picker', label: 'Color Picker' },
+            { key: 'Size Picker', label: 'Size Picker' },
           ].map((item) => (
             <li className="nav-item" key={item.key}>
               <button
